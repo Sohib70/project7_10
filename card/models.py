@@ -6,23 +6,26 @@ User = AUTH_USER_MODEL
 
 class Card(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    create_at = models.DateField(auto_now_add=True)
+    created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.user.first_name
 
     @property
     def total_price(self):
-        return sum(item.total_price for item in self.items)
+        return sum(item.total_price for item in self.items.all())
 
 class CardItem(models.Model):
-    card = models.ForeignKey(Card,on_delete=models.CASCADE)
-    gul = models.ForeignKey(Gullar,on_delete=models.CASCADE)
+    card = models.ForeignKey(Card,on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Gullar,on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.gul.name
+        return self.product.name
 
     @property
     def total_price(self):
-        return self.gul.price * self.amount
+        return self.product.price * self.amount
+

@@ -22,7 +22,9 @@ urlpatterns = [
     path("",include("pageapp.urls")),
 
     # path("api/auth/",include("dj_rest_auth.urls")),
-    # path("api/auth/registration/", include("dj_rest_auth.registration.urls"))
+    # path("api/auth/registration/", include("dj_rest_auth.registration.urls")),
+
+    path("card/",include("card.urls")),
 
     path("api/auth/",include("auth_user_.urls")),
 ]

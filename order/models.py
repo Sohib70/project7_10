@@ -22,16 +22,19 @@ class Order(models.Model):
 
     @property
     def total_price(self):
-        return sum(self.item.total_price for item in self.items)
+        return sum(self.item.total_price for item in self.items.all())
 
-class Ordering(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE,blank=True,null=True)
-    gul = models.ForeignKey(Gullar,on_delete=models.CASCADE )
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,blank=True,null=True,related_name='items')
+    product = models.ForeignKey(Gullar,on_delete=models.CASCADE )
     amount = models.PositiveIntegerField(default=1)
+    create_at = models.DateTimeField(auto_now_add=True)
+
+
 
     def __str__(self):
-        return self.gul.name
+        return self.product.name
 
     @property
     def total_preice(self):
-        return self.gul.price * self.amount
+        return self.product.price * self.amount
